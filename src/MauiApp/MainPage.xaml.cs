@@ -1,23 +1,25 @@
-﻿namespace MauiApp;
+﻿using Microsoft.Maui.Controls.PlatformConfiguration;
+using Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;
+
+namespace MauiApp;
 
 public partial class MainPage : ContentPage
 {
-    int count = 0;
-
     public MainPage()
     {
         InitializeComponent();
     }
 
-    private void OnCounterClicked(object sender, EventArgs e)
+    private void OpenBuggyModal(object sender, EventArgs e)
     {
-        count++;
-
-        if (count == 1)
-            CounterBtn.Text = $"Clicked {count} time";
-        else
-            CounterBtn.Text = $"Clicked {count} times";
-
-        SemanticScreenReader.Announce(CounterBtn.Text);
+        var modalPage = new ModalPage();
+        modalPage.On<iOS>().SetModalPresentationStyle(UIModalPresentationStyle.PageSheet);
+        Shell.Current.Navigation.PushModalAsync(modalPage);
+    }
+    
+    private void OpenNonBuggyModal(object sender, EventArgs e)
+    {
+        var modalPage = new ModalPage();
+        Shell.Current.Navigation.PushModalAsync(modalPage);
     }
 }
